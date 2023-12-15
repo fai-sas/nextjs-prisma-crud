@@ -1,7 +1,9 @@
 'use client'
 
 import { createTaskCustom } from '@/utils/actions'
+import { useEffect } from 'react'
 import { useFormStatus, useFormState } from 'react-dom'
+import toast from 'react-hot-toast'
 // The useFormStatus Hook provides status information of the last form submission.
 // useFormState is a Hook that allows you to update state based on the result of a form action.
 
@@ -25,6 +27,16 @@ const initialState = {
 
 const TaskForm = () => {
   const [state, formAction] = useFormState(createTaskCustom, initialState)
+
+  useEffect(() => {
+    if (state.message === 'error') {
+      toast.error('there was an error')
+      return
+    }
+    if (state.message) {
+      toast.success('task added')
+    }
+  }, [state])
 
   return (
     <form action={formAction}>
